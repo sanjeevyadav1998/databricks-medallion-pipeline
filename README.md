@@ -30,7 +30,9 @@ seed data to exercise validation at the Silver layer.
 ## Prerequisites
 
 - **Databricks Free Edition** account with Unity Catalog (`workspace.default`
-  catalog and schema already exist)
+  catalog and schema already exist on most accounts by default; if not,
+  create them via Catalog Explorer before proceeding — this project does
+  not create or alter the catalog/schema itself)
 - **SQL Warehouse** (e.g. Serverless Starter Warehouse) for the Dashboard
 - **Python 3.10+** locally, for running `generate_sample_data.py`
 
