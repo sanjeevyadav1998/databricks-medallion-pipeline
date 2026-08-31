@@ -7,7 +7,7 @@ accept-reject log for that task.
 
 | # | Task | Target file(s) | Depends on | Ai-prompts log | Status |
 |---|---|---|---|---|---|
-| 1 | Generate sample data with intentional quality issues | `src/data_generation/generate_sample_data.py` | — | `ai-prompts/data-generation.md` | Not started |
+| 1 | Generate sample data with intentional quality issues | `src/data_generation/generate_sample_data.py` | — | `ai-prompts/data-generation.md` | ✅ Done (2 sessions, 1 path fix) |
 | 2 | Bronze ingestion — customers | `src/bronze/01_ingest_customers.py` | #1 | `ai-prompts/bronze-layer.md` | Not started |
 | 3 | Bronze ingestion — orders | `src/bronze/02_ingest_orders.py` | #1 | `ai-prompts/bronze-layer.md` | Not started |
 | 4 | Bronze ingestion — products | `src/bronze/03_ingest_products.py` | #1 | `ai-prompts/bronze-layer.md` | Not started |
