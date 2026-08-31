@@ -12,10 +12,10 @@ accept-reject log for that task.
 | 3 | Bronze ingestion — orders | `src/bronze/02_ingest_orders.py` | #1 | `ai-prompts/bronze-layer.md` | ✅ Done |
 | 4 | Bronze ingestion — products | `src/bronze/03_ingest_products.py` | #1 | `ai-prompts/bronze-layer.md` | ✅ Done |
 | 5 | Bronze orchestrator | `src/bronze/ingest_all.py` | #2–4 | `ai-prompts/bronze-layer.md` | ✅ Done |
-| 6 | Silver quality checks (all 4) + merge | `src/silver/01–05_*.py`, `create_silver_tables.py` | #5 | `ai-prompts/silver-layer.md` | Not started |
-| 7 | Gold aggregations (3) | `src/gold/*.sql`, `create_gold_tables.py` | #6 | `ai-prompts/gold-layer.md` | Not started |
-| 8 | Dashboard queries + guide | `src/dashboard/*` | #7 | `ai-prompts/dashboard.md` | Not started |
-| 9 | Test suite (data quality + integration) | TBD (e.g. `tests/`) | #6, #7 | `ai-prompts/debugging.md` | Not started |
+| 6 | Silver quality checks (all 4) + merge | `src/silver/01–05_*.py`, `create_silver_tables.py` | #5 | `ai-prompts/silver-layer.md` | ✅ Done |
+| 7 | Gold aggregations (3) | `src/gold/*.sql`, `create_gold_tables.py` | #6 | `ai-prompts/gold-layer.md` | ✅ Done |
+| 8 | Dashboard queries + guide | `src/dashboard/*` | #7 | `ai-prompts/dashboard.md` | ✅ Done |
+| 9 | Test suite (data quality + integration) | TBD (e.g. `tests/`) | #6, #7 | `ai-prompts/debugging.md` | ✅ Done |
 | 10 | Database schema / setup script | `database/schema.sql`, `setup-notes.md` | #6, #7 | `ai-prompts/documentation.md` | Not started |
 
 ## Rule for every task
