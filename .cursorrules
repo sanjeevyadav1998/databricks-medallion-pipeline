@@ -1,0 +1,57 @@
+# Cursor Rules — Databricks Medallion Pipeline (e-commerce sales)
+
+You are working inside a Databricks medallion architecture project
+(Bronze → Silver → Gold → Dashboard). Follow these rules on every request,
+even if a prompt doesn't repeat them.
+
+## Stack & environment
+- Python 3.10+, PySpark, Delta Lake, Databricks (target: Community Edition).
+- SQL for Gold-layer aggregations and dashboard queries.
+- No external services beyond S3/DBFS-style local file paths — this runs on
+  Databricks Community Edition, not a paid cluster with extra connectors.
+
+## Layer boundaries (do not blur these)
+- **Bronze** = raw ingestion only. No cleaning, no filtering, no dedup, no type
+  coercion beyond what's needed to read the file. If asked to "just ingest,"
+  do not add validation logic — that belongs in Silver.
+- **Silver** = validation and quality checks. Bad rows are FLAGGED with a
+  `quality_check_result` column, never silently dropped or deleted.
+- **Gold** = aggregation only, reading from Silver's validated data (typically
+  rows that passed checks, unless a prompt says otherwise).
+- Never let Gold-layer code re-implement Silver's validation, and never let
+  Bronze-layer code perform Silver's cleaning.
+
+## Code style
+- Every script is runnable standalone with a clear `if __name__ == "__main__"`
+  entry point (or a Databricks notebook cell equivalent) — no hidden
+  dependencies on notebook-only state.
+- Every function has a docstring stating what it does and why (not just what).
+- Inline comments explain *business logic decisions* (e.g. why a threshold is
+  99% vs 100%), not obvious syntax.
+- Log row counts and key metrics at each stage (ingested, flagged, passed).
+- No hardcoded absolute file paths — use variables/config at the top of the
+  file so paths can change between local/DBFS/S3 without touching logic.
+
+## Naming conventions
+- Files: match the exact filenames in the repo's required structure
+  (e.g. `01_ingest_customers.py`, not `ingest_customers_v2.py`).
+- Tables: `bronze_<entity>`, `silver_<entity>`, `gold_<metric_name>`.
+- Columns: snake_case, matching the schema given in the prompt exactly —
+  do not rename or "improve" schema field names.
+
+## What NOT to do
+- Do not invent additional data quality checks beyond what's specified in a
+  prompt unless explicitly asked — the exercise scope is intentionally small.
+- Do not add retry/orchestration/scheduling frameworks (Airflow, etc.) —
+  out of scope for this exercise.
+- Do not fabricate sample data values silently; if a prompt's spec is
+  ambiguous, add a `# ASSUMPTION:` comment stating what you assumed instead
+  of guessing silently.
+- Do not delete or overwrite files outside the one(s) the current prompt
+  is about.
+
+## When a prompt seems incomplete
+Ask for the missing detail in your response rather than guessing, when the
+gap is about business logic (e.g. "which fields count as PII"). For clearly
+mechanical gaps (e.g. exact variable naming), make a reasonable choice and
+flag it with `# ASSUMPTION:`.
