@@ -16,7 +16,7 @@ accept-reject log for that task.
 | 7 | Gold aggregations (3) | `src/gold/*.sql`, `create_gold_tables.py` | #6 | `ai-prompts/gold-layer.md` | ✅ Done |
 | 8 | Dashboard queries + guide | `src/dashboard/*` | #7 | `ai-prompts/dashboard.md` | ✅ Done |
 | 9 | Test suite (data quality + integration) | TBD (e.g. `tests/`) | #6, #7 | `ai-prompts/debugging.md` | ✅ Done |
-| 10 | Database schema / setup script | `database/schema.sql`, `setup-notes.md` | #6, #7 | `ai-prompts/documentation.md` | Not started |
+| 10 | Database schema / setup script | `database/schema.sql`, `setup-notes.md` | #6, #7 | `ai-prompts/documentation.md` | ✅ Done |
 
 ## Rule for every task
 1. I (Claude) write the full prompt for the task, referencing `spec.md` and
