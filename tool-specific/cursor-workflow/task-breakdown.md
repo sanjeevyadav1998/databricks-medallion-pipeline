@@ -8,10 +8,10 @@ accept-reject log for that task.
 | # | Task | Target file(s) | Depends on | Ai-prompts log | Status |
 |---|---|---|---|---|---|
 | 1 | Generate sample data with intentional quality issues | `src/data_generation/generate_sample_data.py` | — | `ai-prompts/data-generation.md` | ✅ Done (2 sessions, 1 path fix) |
-| 2 | Bronze ingestion — customers | `src/bronze/01_ingest_customers.py` | #1 | `ai-prompts/bronze-layer.md` | Not started |
-| 3 | Bronze ingestion — orders | `src/bronze/02_ingest_orders.py` | #1 | `ai-prompts/bronze-layer.md` | Not started |
-| 4 | Bronze ingestion — products | `src/bronze/03_ingest_products.py` | #1 | `ai-prompts/bronze-layer.md` | Not started |
-| 5 | Bronze orchestrator | `src/bronze/ingest_all.py` | #2–4 | `ai-prompts/bronze-layer.md` | Not started |
+| 2 | Bronze ingestion — customers | `src/bronze/01_ingest_customers.py` | #1 | `ai-prompts/bronze-layer.md` | ✅ Done |
+| 3 | Bronze ingestion — orders | `src/bronze/02_ingest_orders.py` | #1 | `ai-prompts/bronze-layer.md` | ✅ Done |
+| 4 | Bronze ingestion — products | `src/bronze/03_ingest_products.py` | #1 | `ai-prompts/bronze-layer.md` | ✅ Done |
+| 5 | Bronze orchestrator | `src/bronze/ingest_all.py` | #2–4 | `ai-prompts/bronze-layer.md` | ✅ Done |
 | 6 | Silver quality checks (all 4) + merge | `src/silver/01–05_*.py`, `create_silver_tables.py` | #5 | `ai-prompts/silver-layer.md` | Not started |
 | 7 | Gold aggregations (3) | `src/gold/*.sql`, `create_gold_tables.py` | #6 | `ai-prompts/gold-layer.md` | Not started |
 | 8 | Dashboard queries + guide | `src/dashboard/*` | #7 | `ai-prompts/dashboard.md` | Not started |
