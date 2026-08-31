@@ -1,3 +1,72 @@
+# AI Prompts — Documentation
+
+Unlike the other ai-prompts files, this covers work done directly with
+Claude rather than Cursor — the planning, scaffolding, and documentation
+layer of the project. Per the workflow described in `tool-workflow.md`,
+Claude handles everything that isn't code generation inside the repo;
+Cursor is reserved for code only, to protect the $70/month usage cap.
+
+## Session — Stage 0: repo scaffolding
+**Tool:** Claude (chat + file creation, not Cursor)
+**Task:** Generate the full required repo folder/file skeleton (Section 8
+of the brief), with stub placeholders for all not-yet-written artifacts.
+**Output:** Empty/stub files for every required path, so nothing gets
+missed later, plus:
+- `.cursorrules` — enforced Bronze/Silver/Gold boundary rules, naming
+  conventions, and out-of-scope list, loaded automatically into every
+  Cursor session.
+- `tool-specific/cursor-workflow/project-context.md` — schema, row
+  counts, and exact intentional-issue counts for all 3 source files.
+- `tool-specific/cursor-workflow/spec.md` — per-layer, per-script
+  architecture and responsibilities.
+- `tool-specific/cursor-workflow/task-breakdown.md` — the 10-task
+  dependency-ordered plan mapped to individual Cursor sessions, used as
+  the running status tracker throughout the project.
+- `tool-specific/cursor-workflow/cursor-rules-or-instructions.md` — the
+  rationale behind the `.cursorrules` rules.
+**Why this order:** the brief warns against pipeline complexity growing
+at the expense of the lifecycle artifacts (which are weighted higher than
+Core pipeline code). Writing the standing rules and specs before any code
+generation meant every later Cursor prompt could reference a section
+instead of re-explaining context — directly reducing the number of
+Cursor sessions needed.
+
+## Session — Part A: tool-workflow.md
+**Tool:** Claude
+**Task:** Answer all 12 required Part A questions (tool choice, context
+provision, requirement analysis, pipeline design, code generation,
+validation, testing, debugging, data quality, PII avoidance, production
+reuse, lessons learned), based on the actual workflow being used in this
+project, not a generic answer.
+**Output:** `tool-workflow.md`, deliberately left with an open
+"lessons learned" section to be filled in with real examples once actual
+Cursor friction occurred (later true friction from the Bronze layer — see
+`ai-prompts/bronze-layer.md` — was incorporated after the fact).
+
+## Session — requirements-analysis.md and design-notes.md
+**Tool:** Claude
+**Task:** Break down the brief's requirements, weighting, and data
+contract; and separately, document real design decisions (DBFS vs S3,
+which check is the "4th" Silver check, Gold's default row-filtering
+behavior, Bronze's zero-transformation rule, and the same-layer-only
+batching rule for Cursor prompts) with reasoning and trade-offs, before
+any of those decisions were baked into code.
+**Output:** `requirements-analysis.md`, `design-notes.md`. Both flag
+genuine ambiguities in the brief explicitly (e.g. the "4 aggregations"
+vs. 3-defined-aggregations discrepancy) rather than silently resolving
+them without a record.
+
+## Why this matters for the workflow as a whole
+None of this work touched Cursor or the usage cap. Every Cursor session
+logged elsewhere in `ai-prompts/` (data-generation.md, bronze-layer.md,
+etc.) was able to stay short and land correctly close to the first try
+specifically because this planning layer existed first — e.g. the Bronze
+prompt referenced `spec.md` section 2 and `project-context.md`'s schema
+instead of re-deriving them inline.
+
+## Status: ONGOING — updated as later stages (Silver, Gold, Dashboard,
+reflection) are completed with Claude.
+
 # AI Prompts — Documentation (Database Schema, Task 10)
 
 ## Session 1 — Design decisions locked before drafting
