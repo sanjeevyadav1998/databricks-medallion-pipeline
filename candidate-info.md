@@ -6,7 +6,7 @@
 **Primary AI Tool Used:** Cursor / Claude
 **Project Option Selected:** Data Pipeline (Medallion Architecture)
 **Assessment Start Date:** 29-08-2026
-**Submission Date:** 31-08-2026
+**Submission Date:** 01-09-2026
 
 ## Tools & Environment
 
