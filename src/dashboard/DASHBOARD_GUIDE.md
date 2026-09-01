@@ -14,6 +14,12 @@ directly from the dashboard.
   - `workspace.default.gold_daily_weekly_trends`
 - Access to **Databricks SQL** (Free Edition) with Unity Catalog enabled.
 
+## Published dashboard (reference screenshot)
+
+![E-Commerce Sales Overview dashboard](../../screenshots/Screenshot%202026-09-01%20160732.png)
+
+The 4 tiles (Top 10 Products by Revenue, Customer Segmentation, Customer Revenue Distribution, Daily/Weekly Revenue Trend) and both filter widgets (Category, Date Range) as actually published.
+
 ---
 
 ## 1. Create the dashboard

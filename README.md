@@ -53,6 +53,10 @@ Two additional steps not covered there:
    (note: the integration test tier re-runs Bronze/Silver/Gold and
    overwrites live tables).
 
+## Dashboard preview
+
+![E-Commerce Sales Overview dashboard](screenshots/Screenshot%202026-09-01%20160732.png)
+
 ## Repository structure
 
 | Folder | Contents |

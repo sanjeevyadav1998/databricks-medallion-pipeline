@@ -58,12 +58,10 @@ Expected files after upload:
 
 ## 4. Run Bronze ingestion
 
-```python
-# Databricks notebook or job — requires an active SparkSession
-%run ./src/bronze/ingest_all.py
-```
-
-Or invoke `ingest_all(spark)` from a notebook that already has a `spark` session.
+**Do NOT use `%run ./src/bronze/ingest_all.py`** — `%run` only works on
+Databricks notebook files, not plain `.py` scripts, and will fail here.
+See ["Running the scripts in a Databricks notebook cell"](#running-the-scripts-in-a-databricks-notebook-cell)
+below for the correct `runpy`-based invocation.
 
 **Creates:** `workspace.default.bronze_customers`, `workspace.default.bronze_orders`, `workspace.default.bronze_products`
 
@@ -71,9 +69,9 @@ Or invoke `ingest_all(spark)` from a notebook that already has a `spark` session
 
 ## 5. Run Silver layer
 
-```python
-%run ./src/silver/create_silver_tables.py
-```
+**Do NOT use `%run ./src/silver/create_silver_tables.py`** — see
+["Running the scripts in a Databricks notebook cell"](#running-the-scripts-in-a-databricks-notebook-cell)
+below for the correct invocation.
 
 **Depends on:** Bronze tables from step 4.
 
@@ -83,9 +81,9 @@ Or invoke `ingest_all(spark)` from a notebook that already has a `spark` session
 
 ## 6. Run Gold layer
 
-```python
-%run ./src/gold/create_gold_tables.py
-```
+**Do NOT use `%run ./src/gold/create_gold_tables.py`** — see
+["Running the scripts in a Databricks notebook cell"](#running-the-scripts-in-a-databricks-notebook-cell)
+below for the correct invocation.
 
 **Depends on:** Silver tables from step 5.
 
@@ -95,9 +93,12 @@ Or invoke `ingest_all(spark)` from a notebook that already has a `spark` session
 
 ## 7. Verify (optional)
 
-```bash
-python tests/run_all_tests.py
-```
+Run `tests/run_all_tests.py` the same way — see
+["Running the scripts in a Databricks notebook cell"](#running-the-scripts-in-a-databricks-notebook-cell)
+below. Do not run it as a plain shell command (`python tests/run_all_tests.py`)
+outside Databricks — the script expects an active `spark` session
+injected by the notebook environment, which a bare shell process does
+not have.
 
 Runs unit and integration tests end-to-end. The integration tier re-executes Bronze, Silver, and Gold ingestion (steps 4–6) as part of the test suite.
 
@@ -112,3 +113,46 @@ Runs unit and integration tests end-to-end. The integration tier re-executes Bro
 | 6 | `src/gold/create_gold_tables.py` | 4 Gold |
 
 **Total:** 10 tables in `workspace.default`, all created by pipeline scripts via `.saveAsTable(...)` — not by running `database/schema.sql`.
+
+---
+
+## Running the scripts in a Databricks notebook cell
+
+PREREQUISITE: this repo must be connected to Databricks via the native
+**Repos** Git integration (Workspace → Repos → Add Repo → clone this
+repository's URL), not just uploaded as loose files. Databricks Repos
+clones the Git repository directly into your Workspace at a path like
+`/Workspace/Users/<your-databricks-username>/<repo-name>` — that path is
+where the `REPO_ROOT` variable below points, and it stays in sync with
+`git pull`/`git push` from within the Databricks UI's own Git panel. If
+this repo isn't connected via Repos, the `.py` files won't exist at that
+Workspace path and `runpy.run_path(...)` will fail with a file-not-found
+error.
+
+`%run` only works on Databricks notebooks, not plain `.py` files — running
+these scripts requires `runpy` instead, with the active `spark` session
+passed in explicitly. Use this pattern for each stage, changing only the
+`script_path` line:
+
+```python
+import runpy
+
+REPO_ROOT = "/Workspace/Users/<your-databricks-username>/databricks-medallion-pipeline"
+script_path = f"{REPO_ROOT}/src/bronze/ingest_all.py"
+
+print(f"Running: {script_path}\n")
+_ = runpy.run_path(script_path, run_name="__main__", init_globals={"spark": spark})
+```
+
+Swap `script_path` for each stage:
+- Bronze: `{REPO_ROOT}/src/bronze/ingest_all.py`
+- Silver: `{REPO_ROOT}/src/silver/create_silver_tables.py`
+- Gold: `{REPO_ROOT}/src/gold/create_gold_tables.py`
+- Full test suite: `{REPO_ROOT}/tests/run_all_tests.py` (re-runs Bronze →
+  Silver → Gold as part of the integration test tier — overwrites live
+  tables, safe/idempotent given the fixed random seed)
+
+Replace `<your-databricks-username>` with your actual Databricks Repos path
+(visible in the Repos sidebar). The trailing `_ = ` before `runpy.run_path`
+discards its return value so the notebook cell doesn't auto-print the
+entire executed module's namespace dict.
